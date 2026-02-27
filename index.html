@@ -150,7 +150,6 @@
         <script>
         const server = "http://localhost:8080/";
         async function search(terms) {
-          console.log("Fetching API response");
           document.getElementById("status").value = "Searching ...";
           try {
             const res = await fetch(server + "search?query=" + terms);
@@ -160,7 +159,6 @@
             }
 
             const data = await res.json();
-            console.log("API Response:", data);
 
             displaySearchResults(data);
             document.getElementById("status").value = "Done!";

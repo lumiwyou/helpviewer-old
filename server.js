@@ -1,5 +1,5 @@
 import http from "http";
-import { readdirSync, readFileSync } from "node:fs";
+import { readdirSync, readFileSync, existsSync } from "node:fs";
 const PORT = 8080;
 
 const server = http.createServer((req, res) => {
@@ -7,14 +7,14 @@ const server = http.createServer((req, res) => {
 
   if (req.url == "/") {
     text = readFileSync("./index.html", "utf-8");
-    res.setHeader('Content-Type', 'text/html');
+    res.setHeader("Content-Type", "text/html");
     res.write(text);
   }
 
   var terms,
     files,
     results = [];
-  var err, text, found;
+  var err, text, found, filepath;
   if (req.url.includes("/file?path=")) {
     process.stdout.write(
       "FILE " +
@@ -23,8 +23,16 @@ const server = http.createServer((req, res) => {
         req.url.split("/file?path=")[1] +
         ": ",
     );
-    text = readFileSync(req.url.split("/file?path=")[1], "utf-8");
-    res.setHeader('Content-Type', 'text/html');
+    filepath = req.url.split("/file?path=")[1];
+    if (!existsSync(filepath)) {
+      res.statusCode = 500;
+      res.write("brub, this thing does not exist...");
+      res.end();
+      console.log("NEG");
+      return;
+    }
+    text = readFileSync(filepath, "utf-8");
+    res.setHeader("Content-Type", "text/html");
     res.write(text);
     console.log("OK");
   }
