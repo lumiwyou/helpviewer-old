@@ -14,3 +14,5 @@ So, as of right now there is no method laid out here how to accomplish this. How
 Shit, i kind of just laid it out for you. Have fun!
 
 (I might add a feature that does this for you)
+
+Oh yeah, when you have the files, they should be in a  bunch of folders, move all of the html and image files (all FILES) to a new directory called 'docs2' at the project root.
