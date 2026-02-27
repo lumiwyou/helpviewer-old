@@ -1,2 +1,2 @@
-# visual-studio-documentation-offline
+# vsc-documentation-offline
 
