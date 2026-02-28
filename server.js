@@ -149,13 +149,14 @@ const server = http.createServer(async (req, res) => {
       terms.forEach((term, t) => {
         try {
           var found = false;
-          if (element.title.includes(term)) found = true;
+          if (element.title.includes(` ${term} `)) found = true;
           if (Object.keys(element).includes("headers")) {
             if (Array.isArray(element.headers)) {
               // Treat as array
               element.headers.forEach((header) => {
                 if (header != null && Object.keys(header).includes("#text")) {
-                  if (header["#text"].toString().includes(term)) found = true;
+                  if (header["#text"].toString().includes(` ${term} `))
+                    found = true;
                 }
               });
             } else {
@@ -164,7 +165,7 @@ const server = http.createServer(async (req, res) => {
                 element.headers != null &&
                 Object.keys(element.headers).includes("#text")
               ) {
-                if (element.headers["#text"].toString().include(term))
+                if (element.headers["#text"].toString().includes(` ${term} `))
                   found = true;
               }
             }
