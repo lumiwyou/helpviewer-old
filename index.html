@@ -167,26 +167,6 @@
           }
         }
 
-        async function getTitle(item) {
-          try {
-            const response = await fetch(server + "file?path=" + item);
-            const html = await response.text();
-
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, "text/html");
-
-            const element = doc.getElementById("syntax");
-
-            if (element == null) {
-              return "No syntax";
-            } else {
-              return element.nextElementSibling.textContent;
-            }
-          } catch (error) {
-            console.error("Error:", error);
-          }
-        }
-
         async function displaySearchResults(data) {
           const resultsList = document.createElement("ul");
           resultsList.classList.add("search-results");
@@ -194,13 +174,13 @@
           if (Array.isArray(data)) {
             data.forEach(async (item) => {
               const listItem = document.createElement("li");
-              listItem.textContent = await getTitle(item);
+              listItem.textContent = item[0];
               resultsList.appendChild(listItem);
 
               const button = document.createElement("button");
               button.textContent = "View File";
               button.addEventListener("click", () => {
-                document.getElementById("preview").src = server + "file?path=" + item;
+                document.getElementById("preview").src = server + "file?path=" + item[1];
               });
               listItem.appendChild(button);
             });

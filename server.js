@@ -1,6 +1,15 @@
 import http from "http";
 import { readdirSync, readFileSync, existsSync } from "node:fs";
+//import { JSDOM } from "jsdom";
+import { XMLParser, XMLBuilder, XMLValidator } from "fast-xml-parser";
 const PORT = 8080;
+
+// When using --expose-gc flag
+if (global.gc) {
+  global.gc(); // Force garbage collection
+} else {
+  console.log("Garbage collection is not exposed");
+}
 
 const server = http.createServer((req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -14,7 +23,21 @@ const server = http.createServer((req, res) => {
   var terms,
     files,
     results = [];
-  var err, text, found, filepath;
+  var err, text, found, filepath, html, title;
+  var root;
+  const parsingOptions = {
+    ignoreAttributes: false,
+    attributeNamePrefix: "@_",
+    // preserveOrder: true,
+    unpairedTags: ["hr", "br", "link", "meta"],
+    stopNodes: ["*.pre", "*.script"],
+    processEntities: true,
+    isArray: (tagName) => {
+      if (["title", "h2", "codesnippet"].includes(tagName)) return true;
+    },
+    htmlEntities: true,
+  };
+  const parser = new XMLParser(parsingOptions);
   if (req.url.includes("/file?path=")) {
     process.stdout.write(
       "FILE " +
@@ -44,18 +67,33 @@ const server = http.createServer((req, res) => {
 
     files = readdirSync("docs2");
     files.forEach((file) => {
+      // Exclusively iterate HTML files
+      if (!file.includes(".html")) {
+        return;
+      }
       found = false;
       file = "docs2/".concat(file);
-      text = readFileSync(file);
+      var error = false;
+
+      try {
+        html = readFileSync(file);
+        root = parser.parse(html);
+      } catch {
+        error = true;
+      }
+      if (error) {
+        return;
+      }
+
       terms.forEach((term) => {
-        if (text.includes(term)) {
+        if (root.html.head.Title.includes(term)) {
           found = true;
-        } else {
-          found = false;
         }
       });
+
+      // Get synopsis
       if (found) {
-        results.push(file);
+        results.push([root.html.head.Title, file]);
       }
     });
     res.write(JSON.stringify(results));
