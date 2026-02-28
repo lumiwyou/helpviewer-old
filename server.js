@@ -1,16 +1,22 @@
 import http from "http";
-import { writeFileSync, readdirSync, readFileSync, existsSync } from "node:fs";
+import {
+  writeFileSync,
+  readdirSync,
+  readFileSync,
+  existsSync,
+  rmSync,
+} from "node:fs";
 import { XMLParser } from "fast-xml-parser";
 
 const PORT = 8080;
-const DATA_DIR = "helpviewer_data"
-
+const DATA_DIR = "helpviewer_data/";
 
 import {
   detectBufferMime,
   detectFileMime,
   detectFilenameMime,
 } from "mime-detect";
+import { readdir, rm } from "node:fs/promises";
 
 // When using --expose-gc flag
 if (global.gc) {
@@ -19,10 +25,16 @@ if (global.gc) {
   console.log("Garbage collection is not exposed");
 }
 
-global.searchIndex = [];
+global.searchIndex = {
+  files: [],
+  index_data: [],
+};
 
 async function generate_index() {
   console.log("Generating a search index ... this may take a while!");
+
+  if (existsSync("index.json")) rmSync("index.json");
+
   const parsingOptions = {
     ignoreAttributes: false,
     attributeNamePrefix: "@_",
@@ -37,7 +49,7 @@ async function generate_index() {
   };
   const parser = new XMLParser(parsingOptions);
 
-  const files = readdirSync(DATA_DIR);
+  var files = readdirSync(DATA_DIR);
   files.forEach((file, f) => {
     process.stdout.clearLine[0];
     process.stdout.cursorTo(0);
@@ -56,6 +68,7 @@ async function generate_index() {
       return;
     }
 
+    // PROBLEM: different structures for different product data files.
     try {
       var IndexEntry = {
         filepath: file,
@@ -63,7 +76,8 @@ async function generate_index() {
         headers: root.html.body.div.div.div.div.h2,
         codesnippets: root.html.body.div.div.div.div.codesnippet,
       };
-      global.searchIndex.push(IndexEntry);
+      global.searchIndex.files.push(file);
+      global.searchIndex.index_data.push(IndexEntry);
     } catch (error_text) {
       console.log(error_text);
       return;
@@ -79,9 +93,14 @@ if (!existsSync("index.json")) {
   index_data = JSON.stringify(global.searchIndex, null, 2);
   writeFileSync("index.json", index_data);
 } else {
-  console.log("Reading search index ... ");
+  console.log("Loading search index ... ");
   index_data = readFileSync("index.json");
   global.searchIndex = JSON.parse(index_data);
+  /*console.log("Performing validity check ... ");
+  var files = readdirSync(DATA_DIR);
+  files.forEach((file) => {
+    if (!global.searchIndex.files.includes(file)) generate_index();
+  });*/
 }
 index_data = null;
 
@@ -115,6 +134,7 @@ const server = http.createServer(async (req, res) => {
     var text = readFileSync(filepath, "utf-8");
     var contentType = await detectFileMime(filepath);
     if (contentType.localeCompare("text/xml")) contentType = "text/html";
+    if (filepath.includes(".css")) contentType = "text/css";
     res.setHeader("Content-Type", contentType);
     res.write(text);
     console.log(contentType + " OK");
@@ -123,7 +143,7 @@ const server = http.createServer(async (req, res) => {
     terms = req.url.split("?query=")[1].split("+");
     process.stdout.write(`[SEARCH] ${new Date().getTime()}: ${terms}: `);
 
-    global.searchIndex.forEach((element) => {
+    global.searchIndex.index_data.forEach((element) => {
       terms.forEach((term, t) => {
         try {
           var found = false;

@@ -19,3 +19,6 @@ Shit is not ready yet, stop asking if u are, idk nobody cares abt this pathetic 
 You're good to go!
 I expect praises and kisses!
 I expect you to bow down before my footsies and kiss them.
+
+# Known issues
+- Right now, the parser does not work for most HelpViewer product files due to varying XML-structures.
