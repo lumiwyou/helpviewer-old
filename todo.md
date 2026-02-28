@@ -1,6 +1,7 @@
 # Do this shit
-- Don't parse for syntax synopsis on client-side [move to backend]
-  - OOM-error in search endpoint handling (gc not doinmg shit)
-  - Create a metadata database instead for faster querying, consider adding tags
-- Include exclusively *.html files in search
-- Integrate search term check into the XMLparsing section for performance
+- [ ] Add method for downloading documentation data files from microsoft servers.
+  - [ ] 1. Install Windows on VM
+  - [ ] 2. Install Visual Studio Community
+  - [ ] 3. Install MiTMProxy
+  - [ ] 4. __Download__ and install Visual Studio Community WebHelper and docudata
+  - [ ] 5. Extract URLs of interest
