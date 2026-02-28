@@ -1,5 +1,5 @@
 {
-  "name": "playground1",
+  "name": "helpviewer-reader",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,8 +11,8 @@
     "test": "node --expose-gc --trace-gc --prof --inspect server.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "lum1",
+  "license": "GPL-3.0-only",
   "type": "module",
   "dependencies": {
     "express": "^5.2.1",

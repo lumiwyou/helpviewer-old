@@ -1,6 +1,9 @@
+// SPDX-License-Identifier: GPL-3.0 WITH bison-exception
+// Copyright © 2024 lum1
 import { XMLParser } from "fast-xml-parser";
 
-const microsoft_root = "https://services.mtps.microsoft.com/serviceapi/products";
+const microsoft_root =
+  "https://services.mtps.microsoft.com/serviceapi/products";
 
 async function parsePage(url) {
   const parsingOptions = {

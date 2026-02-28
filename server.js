@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0 WITH bison-exception
+// Copyright © 2024 lum1
 import http from "http";
 import {
   writeFileSync,

@@ -1,4 +1,6 @@
 # HelpViewer Offline Reader
+> [!Important]
+> Under the GNU General Public License version 3 (GPL-3.0), the software is provided "as is," without any warranty or guarantee of any kind. The authors or copyright holders are not liable for any damages or issues that arise from using, modifying, or distributing the software. Use the software at your own risk.
 
 ## Installation
 1. Install NodeJS (https://nodejs.org/en/download)
@@ -22,3 +24,5 @@ I expect you to bow down before my footsies and kiss them.
 
 # Known issues
 - Right now, the parser does not work for most HelpViewer product files due to varying XML-structures.
+// SPDX-License-Identifier: GPL-3.0 WITH bison-exception
+// Copyright © 2024 lum1
