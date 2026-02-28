@@ -24,5 +24,7 @@ I expect you to bow down before my footsies and kiss them.
 
 # Known issues
 - Right now, the parser does not work for most HelpViewer product files due to varying XML-structures.
-// SPDX-License-Identifier: GPL-3.0 WITH bison-exception
-// Copyright © 2024 lum1
+
+### Copyright
+SPDX-License-Identifier: GPL-3.0 WITH bison-exception
+Copyright © 2024 lum1
