@@ -3,121 +3,122 @@
     <head>
         <title>VSC DOCUMENTATION OFFLINE</title>
         <style>
-        * {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0px;
-        }
-        body {
-            background-color: #1e1e1e;
-            color: #d4d4d4;
-            font-family: "Fira Code", monospace;
-        }
-
-        header {
-            background-color: #212121;
-            padding: 1em;
-            border-bottom: 1px solid #44475a;
-            text-align: left;
-        }
-
-        form {
-            background-color: #282c34;
-            border-bottom: 1px solid #44475a;
-            padding: 1em;
-        }
-
-        form label {
-            color: #d4d4d4;
-        }
-
-        form input[type="text"],
-        form input[type="submit"] {
-            background-color: #3e4451;
-            color: #d4d4d4;
-            border: 1px solid #44475a;
-            padding: 0.6em;
-            font-family: "Fira Code", monospace;
-        }
-
-        form input[type="text"] {
-            width:50%;
-        }
-
-        form input[type="submit"]:hover {
-            background-color: #44475a;
-            cursor: pointer;
-        }
-
-        form input[id="status"] {
-            background-color: #212121;
-            color: #d4d4d4;
-            border: 1px solid #44475a;
-            padding: 0.6em;
-            font-family: "Fira Code", monospace;
-        }
-
-        #results {
-            flex: 0 1 auto;
-            float: left;
-            background-color: #282c34;
-            padding: 1em;
-            display: block;
-            overflow-y: scroll;
-            width: 35%;
-            height: 100%;
-        }
-
-        #preview_aside {
-            flex: 1 1 auto;
-            background-color: #212121;
-            border-left: 1px solid #44475a;
-            padding: 1em;
-            width: auto;
-            height: 100%;
-            display: block;
-            float: right;
-        }
-
-        #preview_aside iframe {
-            border: 0px;
-            width: 100%;
-            height: 100%;
-            background: white;
-        }
-
-        #dabox {
-            height: 800px;
-            display: flex;
-            flex-flow: row;
-        }
-
-        #results ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        #results li {
-            background-color: #3e4451;
-            padding: 0.6em;
-            margin-bottom: 0.4em;
-            padding-left: -20px;
-            #menu li {
-                padding: 0px;
-            }
-            #menu li a {
+            * {
+                font-family: Arial, Helvetica, sans-serif;
                 margin: 0px;
+            }
+            body {
+                background-color: #1e1e1e;
+                color: #d4d4d4;
+                font-family: "Fira Code", monospace;
+            }
+
+            header {
+                background-color: #212121;
+                padding: 1em;
+                border-bottom: 1px solid #44475a;
+                text-align: left;
+            }
+
+            form {
+                background-color: #282c34;
+                border-bottom: 1px solid #44475a;
+                padding: 1em;
+            }
+
+            form label {
+                color: #d4d4d4;
+            }
+
+            form input[type="text"],
+            form input[type="submit"] {
+                background-color: #3e4451;
+                color: #d4d4d4;
+                border: 1px solid #44475a;
+                padding: 0.6em;
+                font-family: "Fira Code", monospace;
+            }
+
+            form input[type="text"] {
+                width: 50%;
+            }
+
+            form input[type="submit"]:hover {
+                background-color: #44475a;
+                cursor: pointer;
+            }
+
+            form input[id="status"] {
+                background-color: #212121;
+                color: #d4d4d4;
+                border: 1px solid #44475a;
+                width: 30%;
+                padding: 0.6em;
+                font-family: "Fira Code", monospace;
+            }
+
+            #results {
+                flex: 0 1 auto;
+                float: left;
+                background-color: #282c34;
+                padding: 1em;
                 display: block;
-                width: 100%;
+                overflow-y: scroll;
+                width: 35%;
                 height: 100%;
             }
-        }
 
-        #results button {
-            float: right;
-            background-color: c7c9c8;
-            border: 1px solid #44475a;
-        }
+            #preview_aside {
+                flex: 1 1 auto;
+                background-color: #212121;
+                border-left: 1px solid #44475a;
+                padding: 1em;
+                width: auto;
+                height: 100%;
+                display: block;
+                float: right;
+            }
+
+            #preview_aside iframe {
+                border: 0px;
+                width: 100%;
+                height: 100%;
+                background: white;
+            }
+
+            #dabox {
+                height: 800px;
+                display: flex;
+                flex-flow: row;
+            }
+
+            #results ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            #results li {
+                background-color: #3e4451;
+                padding: 0.6em;
+                margin-bottom: 0.4em;
+                padding-left: -20px;
+                #menu li {
+                    padding: 0px;
+                }
+                #menu li a {
+                    margin: 0px;
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            #results button {
+                float: right;
+                background-color: c7c9c8;
+                border: 1px solid #44475a;
+            }
         </style>
     </head>
     <body>
@@ -137,6 +138,10 @@
                 id="status"
                 placeholder="Awaiting user ..."
             />
+            <img
+                id="loading"
+                src="http://localhost:8080/file?path=loading.gif"
+            />
             <script>
                 document.getElementById("status").value = "";
             </script>
@@ -144,58 +149,71 @@
         <div id="dabox">
             <div id="results"></div>
             <aside id="preview_aside" style="float: right">
-                <iframe id="preview" href="google.com""></iframe>
+                <iframe id="preview" href=""></iframe>
             </aside>
         </div>
         <script>
-        const server = "http://localhost:8080/";
-        async function search(terms) {
-          document.getElementById("status").value = "Searching ...";
-          try {
-            const res = await fetch(server + "search?query=" + terms);
+            const server = "http://localhost:8080/";
+            async function search(terms) {
+                const loading = document.getElementById("loading");
+                const status = document.getElementById("status");
+                loading.hidden = false;
+                status.style = "background-color:#fcfca4;";
+                status.value = "Querying ... ";
+                try {
+                    const res = await fetch(`${server}search?query=${terms}`);
 
-            if (!res.ok) {
-              throw new Error(`Response status: ${res.status}`);
+                    if (!res.ok) {
+                        throw new Error(`Response status: ${res.status}`);
+                    }
+                    status.value = "Received ... ";
+
+                    const data = await res.json();
+
+                    status.value = "Displaying ... ";
+                    await displaySearchResults(data);
+                    status.value = "Done ! ";
+                    loading.hidden = true;
+                    status.style = "background-color:#a4fca4;";
+                } catch (error) {
+                    loading.hidden = true;
+                    status.value = error;
+                    status.style = "background-color:#8F1717;";
+                }
             }
 
-            const data = await res.json();
+            async function displaySearchResults(data) {
+                const resultsList = document.createElement("ul");
+                resultsList.classList.add("search-results");
 
-            displaySearchResults(data);
-            document.getElementById("status").value = "Done!";
-          } catch (error) {
-            document.getElementById("status").value = error;
-          }
-        }
+                if (Array.isArray(data)) {
+                    const total = data.length;
+                    data.forEach(async (item, i) => {
+                        status.value = `Displaying ${i}/${total}`;
+                        const listItem = document.createElement("li");
+                        listItem.textContent = item[0];
+                        resultsList.appendChild(listItem);
 
-        async function displaySearchResults(data) {
-          const resultsList = document.createElement("ul");
-          resultsList.classList.add("search-results");
+                        const button = document.createElement("button");
+                        button.textContent = "View File";
+                        button.addEventListener("click", () => {
+                            document.getElementById("preview").src =
+                                server + "file?path=" + item[1];
+                        });
+                        listItem.appendChild(button);
+                    });
+                } else {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = "No results found";
+                    resultsList.appendChild(listItem);
+                }
 
-          if (Array.isArray(data)) {
-            data.forEach(async (item) => {
-              const listItem = document.createElement("li");
-              listItem.textContent = item[0];
-              resultsList.appendChild(listItem);
-
-              const button = document.createElement("button");
-              button.textContent = "View File";
-              button.addEventListener("click", () => {
-                document.getElementById("preview").src = server + "file?path=" + item[1];
-              });
-              listItem.appendChild(button);
-            });
-          } else {
-            const listItem = document.createElement("li");
-            listItem.textContent = "No results found";
-            resultsList.appendChild(listItem);
-          }
-
-          const resultsContainer = document.getElementById("results");
-          if (resultsContainer) {
-            resultsContainer.innerHTML = ""; // Clear previous results
-            resultsContainer.appendChild(resultsList);
-          }
-        }
+                const resultsContainer = document.getElementById("results");
+                if (resultsContainer) {
+                    resultsContainer.innerHTML = ""; // Clear previous results
+                    resultsContainer.appendChild(resultsList);
+                }
+            }
         </script>
     </body>
 </html>

@@ -1,8 +1,13 @@
 import http from "http";
-import { readdirSync, readFileSync, existsSync } from "node:fs";
-//import { JSDOM } from "jsdom";
-import { XMLParser, XMLBuilder, XMLValidator } from "fast-xml-parser";
+import { writeFileSync, readdirSync, readFileSync, existsSync } from "node:fs";
+import { XMLParser } from "fast-xml-parser";
 const PORT = 8080;
+
+import {
+  detectBufferMime,
+  detectFileMime,
+  detectFilenameMime,
+} from "mime-detect";
 
 // When using --expose-gc flag
 if (global.gc) {
@@ -11,20 +16,10 @@ if (global.gc) {
   console.log("Garbage collection is not exposed");
 }
 
-const server = http.createServer((req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+global.searchIndex = [];
 
-  if (req.url == "/") {
-    text = readFileSync("./index.html", "utf-8");
-    res.setHeader("Content-Type", "text/html");
-    res.write(text);
-  }
-
-  var terms,
-    files,
-    results = [];
-  var err, text, found, filepath, html, title;
-  var root;
+async function generate_index() {
+  console.log("Generating a search index ... this may take a while!");
   const parsingOptions = {
     ignoreAttributes: false,
     attributeNamePrefix: "@_",
@@ -38,6 +33,66 @@ const server = http.createServer((req, res) => {
     htmlEntities: true,
   };
   const parser = new XMLParser(parsingOptions);
+
+  const files = readdirSync("docs2");
+  files.forEach((file, f) => {
+    process.stdout.clearLine[0];
+    process.stdout.cursorTo(0);
+    process.stdout.write(`${f} / ${files.length}`);
+    // Exclusively iterate HTML files
+    if (!file.includes(".html")) {
+      return;
+    }
+    file = "docs2/".concat(file);
+
+    try {
+      var html = readFileSync(file);
+      var root = parser.parse(html);
+    } catch (error_text) {
+      console.log(error_text);
+      return;
+    }
+
+    try {
+      var IndexEntry = {
+        filepath: file,
+        title: root.html.head.Title,
+        headers: root.html.body.div.div.div.div.h2,
+        codesnippets: root.html.body.div.div.div.div.codesnippet,
+      };
+      global.searchIndex.push(IndexEntry);
+    } catch (error_text) {
+      console.log(error_text);
+      return;
+    }
+  });
+  console.log(" Done!");
+}
+
+var index_data;
+if (!existsSync("index.json")) {
+  await generate_index();
+
+  index_data = JSON.stringify(global.searchIndex, null, 2);
+  writeFileSync("index.json", index_data);
+} else {
+  console.log("Reading search index ... ");
+  index_data = readFileSync("index.json");
+  global.searchIndex = JSON.parse(index_data);
+}
+index_data = null;
+
+const server = http.createServer(async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  if (req.url == "/") {
+    var text = readFileSync("./index.html", "utf-8");
+    res.setHeader("Content-Type", "text/html");
+    res.write(text);
+  }
+
+  var terms,
+    results = [];
   if (req.url.includes("/file?path=")) {
     process.stdout.write(
       "FILE " +
@@ -46,56 +101,42 @@ const server = http.createServer((req, res) => {
         req.url.split("/file?path=")[1] +
         ": ",
     );
-    filepath = req.url.split("/file?path=")[1];
+    var filepath = req.url.split("/file?path=")[1];
     if (!existsSync(filepath)) {
       res.statusCode = 500;
-      res.write("brub, this thing does not exist...");
+      res.write("File does not exist");
       res.end();
       console.log("NEG");
       return;
     }
-    text = readFileSync(filepath, "utf-8");
-    res.setHeader("Content-Type", "text/html");
+    var text = readFileSync(filepath, "utf-8");
+    var contentType = await detectFileMime(filepath);
+    if (contentType.localeCompare("text/xml")) contentType = "text/html";
+    res.setHeader("Content-Type", contentType);
     res.write(text);
-    console.log("OK");
+    console.log(contentType + " OK");
   }
   if (req.url.includes("/search?query=")) {
     terms = req.url.split("?query=")[1].split("+");
-    process.stdout.write(
-      "SEARCH " + new Date().getTime() + ": " + terms + ": ",
-    );
+    process.stdout.write(`[SEARCH] ${new Date().getTime()}: ${terms}: `);
 
-    files = readdirSync("docs2");
-    files.forEach((file) => {
-      // Exclusively iterate HTML files
-      if (!file.includes(".html")) {
-        return;
-      }
-      found = false;
-      file = "docs2/".concat(file);
-      var error = false;
+    global.searchIndex.forEach((element) => {
+      terms.forEach((term, t) => {
+        try {
+          var found = false;
+          if (element.title.includes(term)) found = true;
+        } catch (error_text) {
+          console.log(error_text);
+          console.log(element);
+        }
 
-      try {
-        html = readFileSync(file);
-        root = parser.parse(html);
-      } catch {
-        error = true;
-      }
-      if (error) {
-        return;
-      }
-
-      terms.forEach((term) => {
-        if (root.html.head.Title.includes(term)) {
-          found = true;
+        if (found) {
+          results.push([element.title, element.filepath]);
+          return;
         }
       });
-
-      // Get synopsis
-      if (found) {
-        results.push([root.html.head.Title, file]);
-      }
     });
+
     res.write(JSON.stringify(results));
     console.log("OK");
   }
@@ -103,5 +144,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log("Server running on port ${PORT}");
+  console.log(`Service running on http://localhost:${PORT}`);
 });
