@@ -125,6 +125,48 @@ const server = http.createServer(async (req, res) => {
         try {
           var found = false;
           if (element.title.includes(term)) found = true;
+          if (Object.keys(element).includes("headers")) {
+            if (Array.isArray(element.headers)) {
+              // Treat as array
+              element.headers.forEach((header) => {
+                if (header != null && Object.keys(header).includes("#text")) {
+                  if (header["#text"].toString().includes(term)) found = true;
+                }
+              });
+            } else {
+              // Treat as single-element
+              if (
+                element.headers != null &&
+                Object.keys(element.headers).includes("#text")
+              ) {
+                if (element.headers["#text"].toString().include(term))
+                  found = true;
+              }
+            }
+          }
+          if (Object.keys(element).includes("codesnippets")) {
+            if (Array.isArray(element.codesnippets)) {
+              // Treat as array
+              element.codesnippets.forEach((codesnippet) => {
+                if (
+                  codesnippet != null &&
+                  Object.keys(codesnippet).includes("#text")
+                ) {
+                  if (codesnippet["#text"].toString().includes(term))
+                    found = true;
+                }
+              });
+            } else {
+              // Treat as single-element
+              if (
+                element.codesnippets != null &&
+                Object.keys(element.codesnippets).includes("#text")
+              ) {
+                if (element.codesnippets["#text"].toString().include(term))
+                  found = true;
+              }
+            }
+          }
         } catch (error_text) {
           console.log(error_text);
           console.log(element);
