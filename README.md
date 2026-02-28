@@ -23,7 +23,7 @@ I expect praises and kisses!
 I expect you to bow down before my footsies and kiss them.
 
 # Known issues
-- Right now, the parser does not work for most HelpViewer product files due to varying XML-structures.
+- Right now, the parser does not work for most HelpViewer product files due to varying XML-structures. (It is only tailored after a specific product group as of right now)
 
 ### Copyright
 SPDX-License-Identifier: GPL-3.0 WITH bison-exception
