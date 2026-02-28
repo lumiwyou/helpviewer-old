@@ -1,7 +1,10 @@
 import http from "http";
 import { writeFileSync, readdirSync, readFileSync, existsSync } from "node:fs";
 import { XMLParser } from "fast-xml-parser";
+
 const PORT = 8080;
+const DATA_DIR = "helpviewer_data"
+
 
 import {
   detectBufferMime,
@@ -34,16 +37,16 @@ async function generate_index() {
   };
   const parser = new XMLParser(parsingOptions);
 
-  const files = readdirSync("docs2");
+  const files = readdirSync(DATA_DIR);
   files.forEach((file, f) => {
     process.stdout.clearLine[0];
     process.stdout.cursorTo(0);
     process.stdout.write(`${f} / ${files.length}`);
     // Exclusively iterate HTML files
-    if (!file.includes(".html")) {
+    if (!file.includes(".html") && !file.includes(".htm")) {
       return;
     }
-    file = "docs2/".concat(file);
+    file = DATA_DIR.concat(file);
 
     try {
       var html = readFileSync(file);
