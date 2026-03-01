@@ -1,0 +1,55 @@
+<!-- SPDX-License-Identifier: GPL-3.0 WITH bison-exception
+Copyright © 2024 lum1 -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>HelpViewer Reader</title>
+        <link
+            rel="stylesheet"
+            href="http://localhost:8080/file?path=frontend/style.css"
+        ></link>
+        <script src="http://localhost:8080/file?path=frontend/utils.js"></script>
+    </head>
+    <body>
+        <header>
+            <div id="title-area">
+                <h3>HelpViewer Reader</h3>
+            </div>
+            <div id="credits-area">
+                <p id="credits">developed by <a href="https://codeberg.org/lum1/">@lum1</a></p>
+            </div>
+        </header>
+        <main>
+            <form id="searchForm" action="javascript:void(0);">
+                <label for="lsearch">Search:</label>
+                <input type="text" id="terms" name="query" /><br /><br />
+                <input
+                    type="submit"
+                    value="Submit"
+                    onclick="search(this.form.terms.value)"
+                />
+                <input
+                    readonly="true"
+                    id="status"
+                    placeholder="Awaiting user ..."
+                />
+                <img
+                    id="loading"
+                    src="http://localhost:8080/file?path=loading.gif"
+                />
+                <script>
+                    document.getElementById("status").value = "";
+                </script>
+            </form>
+            <div id="dabox">
+                <div id="results"></div>
+                <aside id="preview_aside" style="float: right">
+                    <iframe id="preview" href=""></iframe>
+                </aside>
+            </div>
+        </main>
+        <footer>
+            <p>SPDX-License-Identifier: GPL-3.0 WITH bison-exception Copyright © 2024 lum1</p>
+        </footer>
+    </body>
+</html>

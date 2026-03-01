@@ -1,0 +1,130 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0px;
+}
+body {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: "Fira Code", monospace;
+}
+
+header {
+    background-color: #212121;
+    padding: 1em;
+    border-bottom: 1px solid #44475a;
+}
+
+#title-area {
+    display: box;
+}
+#credits-area {
+    display: box;
+}
+
+form {
+    background-color: #282c34;
+    border-bottom: 1px solid #44475a;
+    padding: 1em;
+}
+
+form label {
+    color: #d4d4d4;
+}
+
+form input[type="text"],
+form input[type="submit"] {
+    background-color: #3e4451;
+    color: #d4d4d4;
+    border: 1px solid #44475a;
+    padding: 0.6em;
+    font-family: "Fira Code", monospace;
+}
+
+form input[type="text"] {
+    width: 50%;
+}
+
+form input[type="submit"]:hover {
+    background-color: #44475a;
+    cursor: pointer;
+}
+
+form input[id="status"] {
+    background-color: #212121;
+    color: #d4d4d4;
+    border: 1px solid #44475a;
+    width: 30%;
+    padding: 0.6em;
+    font-family: "Fira Code", monospace;
+}
+
+#results {
+    flex: 0 1 auto;
+    float: left;
+    background-color: #282c34;
+    padding: 1em;
+    display: block;
+    overflow-y: scroll;
+    width: 35%;
+    height: 100%;
+}
+
+#preview_aside {
+    flex: 1 1 auto;
+    background-color: #212121;
+    border-left: 1px solid #44475a;
+    padding: 1em;
+    width: auto;
+    height: 100%;
+    display: block;
+    float: right;
+}
+
+#preview_aside iframe {
+    border: 0px;
+    width: 100%;
+    height: 100%;
+    background: white;
+}
+
+#dabox {
+    height: 800px;
+    display: flex;
+    flex-flow: row;
+}
+
+#results ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#results li {
+    background-color: #3e4451;
+    padding: 0.6em;
+    margin-bottom: 0.4em;
+    padding-left: -20px;
+    #menu li {
+        padding: 0px;
+    }
+    #menu li a {
+        margin: 0px;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+#results button {
+    float: right;
+    background-color: c7c9c8;
+    border: 1px solid #44475a;
+}
+
+footer {
+    background-color: #212121;
+    padding: 1em;
+    height: 100px;
+    border-top: 1px solid #44475a;
+    text-align: center;
+}

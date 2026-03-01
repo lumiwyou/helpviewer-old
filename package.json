@@ -7,7 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "node server.js",
+    "experimental": "node backend/server.exp.js",
+    "start": "node backend/server.js",
     "test": "node --expose-gc --trace-gc --prof --inspect server.js"
   },
   "keywords": [],

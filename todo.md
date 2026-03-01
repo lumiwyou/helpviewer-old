@@ -7,3 +7,4 @@
 1. Change project name to *[Visual Studio] HelpViewer Documentation Reader*
 2. Include ``*.htm`` files into to the indexing and search process.
 3. ``server.js`` implement a validity check of the ``index.json`` file in regards to the helpviewer_data, such as in the case where someone may add new datafiles that have not been indexed yet!
+4. Restructure the functions, use file path join instead
