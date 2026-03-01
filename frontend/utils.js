@@ -1,4 +1,4 @@
-const server = "http://localhost:8080/";
+const server = "http://localhost:8000/";
 async function search(terms) {
   const loading = document.getElementById("loading");
   const status = document.getElementById("status");
@@ -6,7 +6,7 @@ async function search(terms) {
   status.style = "background-color:#fcfca4;";
   status.value = "Querying ... ";
   try {
-    const res = await fetch(`${server}search?query=${terms}`);
+    const res = await fetch(`${server}query?terms=${terms}`);
 
     if (!res.ok) {
       throw new Error(`Response status: ${res.status}`);

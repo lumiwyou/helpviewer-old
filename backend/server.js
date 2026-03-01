@@ -74,9 +74,9 @@ async function generate_index() {
     try {
       var IndexEntry = {
         filepath: file,
-        title: root.html.head.Title,
-        headers: root.html.body.div.div.div.div.h2,
-        codesnippets: root.html.body.div.div.div.div.codesnippet,
+        title: root.html.head.title, //Title,
+        //headers: root.html.body.div.div.div.div.h2,
+        //codesnippets: root.html.body.div.div.div.div.codesnippet,
       };
       global.searchIndex.files.push(file);
       global.searchIndex.index_data.push(IndexEntry);
