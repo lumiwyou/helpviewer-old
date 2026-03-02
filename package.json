@@ -9,7 +9,7 @@
     "scripts": {
         "experimental": "node backend/server.exp.js",
         "start": "node backend/server.js",
-        "dev": "node --expose-gc --trace-gc --prof --inspect backend/server.exp.js --bind 192.168.1.106 --port 8000"
+        "dev": "node backend/server.exp.js --bind 192.168.1.106 --port 8000"
     },
     "keywords": [],
     "author": "lum1",

@@ -23,12 +23,14 @@ global.config = {
     included_files: [".html", ".htm"],
 };
 
-process.argv.forEach(function (value, index, array) {
-    if (value.localeCompare("--bind") && array.length != index)
-        global.config.bind.address = array[index + 1];
-    if (value.localeCompare("--port") && array.length != index)
-        global.config.bind.port = array[index + 1];
-});
+for (var x = 0; x < process.argv.length; x++) {
+    switch (process.argv[x]) {
+        case "--bind":
+            global.config.bind.address = process.argv[x + 1];
+        case "--port":
+            global.config.bind.port = parseInt(process.argv[x + 1]);
+    }
+}
 
 global.index = {
     fileList: [],
