@@ -41,7 +41,7 @@ form input[type="submit"] {
 }
 
 form input[type="text"] {
-    width: 50%;
+    width: 100%;
 }
 
 form input[type="submit"]:hover {
@@ -53,9 +53,24 @@ form input[id="status"] {
     background-color: #212121;
     color: #d4d4d4;
     border: 1px solid #44475a;
-    width: 30%;
+    width: 100%;
     padding: 0.6em;
     font-family: "Fira Code", monospace;
+}
+
+#loading {
+    height: 100%;
+}
+
+.searchFormDivider {
+    height: 50px;
+    display: flex;
+    padding: 5px;
+}
+.searchFormDivider label {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #44475a;
 }
 
 #results {

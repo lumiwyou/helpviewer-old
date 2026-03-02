@@ -22,23 +22,27 @@ Copyright © 2024 lum1 -->
         </header>
         <main>
             <form id="searchForm" action="javascript:void(0);">
-                <label for="lsearch">Search:</label>
-                <input type="text" id="terms" name="query" /><br /><br />
-                <input
-                    type="submit"
-                    value="Submit"
-                    onclick="search(this.form.terms.value)"
-                />
-                <input
-                    readonly="true"
-                    id="status"
-                    placeholder="Awaiting user ..."
-                />
-                <img
-                    id="loading"
-                    src="/file?path=frontend/loading.gif"
-                    hidden="true"
-                />
+                <div class="searchFormDivider">
+                    <input type="text" id="terms" name="query" /><br /><br />
+                    <input
+                        type="submit"
+                        value="Submit"
+                        onclick="search(this.form.terms.value)"
+                    />
+                </div>
+                <div class="searchFormDivider">
+                    <label>Status</label>
+                    <input
+                        readonly="true"
+                        id="status"
+                        placeholder="Awaiting user ..."
+                    />
+                    <img
+                        id="loading"
+                        src="/file?path=frontend/loading.gif"
+                        hidden="true"
+                    />
+                </div>
             </form>
             <div id="dabox">
                 <div id="results"></div>

@@ -85,7 +85,7 @@ app.get(global.config.endpoints.query, (req, res) => {
 
   console.info(`${new Date().getTime()} ${req.url}`);
   global.index.entries.forEach((entry) => {
-    if (matchesEntry(entry, terms)) results.push(entry.title, entry.filepath);
+    if (matchesEntry(entry, terms)) results.push([entry.title, entry.filepath]);
   });
   res.send(JSON.stringify(results));
   res.end();

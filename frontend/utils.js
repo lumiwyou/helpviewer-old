@@ -29,12 +29,18 @@ async function search(terms) {
 
 async function displaySearchResults(data) {
   const resultsList = document.createElement("ul");
+  const status = document.getElementById("status");
   resultsList.classList.add("search-results");
 
   if (Array.isArray(data)) {
     const total = data.length;
+    var base = 0;
+    var allowed_count = 100;
     data.forEach(async (item, i) => {
-      status.value = `Displaying ${i}/${total}`;
+      status.value = `Displaying (${i}/${base + allowed_count})/${total}`;
+      if (i - base >= allowed_count) {
+        return;
+      }
       const listItem = document.createElement("li");
       listItem.textContent = item[0];
       resultsList.appendChild(listItem);
