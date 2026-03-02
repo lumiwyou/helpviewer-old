@@ -7,6 +7,7 @@ export const matchesEntry = async function matchesEntry(entry, terms) {
   return terms.forEach((term, t) => {
     try {
       var found = false;
+      console.log(entry);
       if (entry.title.includes(` ${term} `)) found = true;
       if (Object.keys(entry).includes("headers")) {
         if (Array.isArray(entry.headers)) {

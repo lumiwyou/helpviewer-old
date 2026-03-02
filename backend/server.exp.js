@@ -63,10 +63,11 @@ app.get(global.config.endpoints.get_file, async (req, res) => {
   }
 
   var type = await detectFileMime(file);
-  // To fix the issue where documents are viewed as XML in an html client
+  // MIMEDetect not correctly working, prolly due to unwaited promise
   if (type.localeCompare("text/xml")) type = "text/xml";
   if (file.includes(".css")) type = "text/css";
   if (file.includes(".gif")) type = "image/gif";
+  if (file.includes(".js")) type = "text/javascript";
   res.header("Content-Type", type);
   res.send(readFileSync(file));
   console.info(`${type} OK`);

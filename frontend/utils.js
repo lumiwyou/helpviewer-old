@@ -1,4 +1,4 @@
-const server = "http://localhost:8000/";
+const server = `http://${location.host}/`;
 async function search(terms) {
   const loading = document.getElementById("loading");
   const status = document.getElementById("status");

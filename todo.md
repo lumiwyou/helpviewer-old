@@ -8,3 +8,6 @@
 2. Include ``*.htm`` files into to the indexing and search process.
 3. ``server.js`` implement a validity check of the ``index.json`` file in regards to the helpviewer_data, such as in the case where someone may add new datafiles that have not been indexed yet!
 4. Restructure the functions, use file path join instead
+
+
+- Issue: if the results batch is bigger than the browser can handle, then we should split them up in pages, where each page loads a certain amount of the results. Should we then store the results as a variable on server-end? Or should it search again and again and return according to page parameters?

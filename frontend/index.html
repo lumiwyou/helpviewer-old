@@ -53,10 +53,14 @@ Copyright © 2024 lum1 -->
         <script>
         // Bootstrap script
         console.info("Running bootstrap");
-        document.getElementById("style-import").href = `${location.host}/file?path=frontend/style.css`;
-        document.getElementById("utils-import").src = `${location.host}/file?path=frontend/utils.js`
-        document.getElementById("favicon-import").src = `${location.host}/file?path=frontend/favicon.ico`
-        document.getElementById("loading").src = `${location.host}/file?path=frontend/loading.gif`
+        document.getElementById("style-import").href = `http://${location.host}/file?path=frontend/style.css`;
+        document.getElementById("favicon-import").href = `http://${location.host}/file?path=frontend/favicon.ico`
+        document.getElementById("loading").src = `http://${location.host}/file?path=frontend/loading.gif`
+       var head = document.getElementsByTagName('head')[0];
+       var script = document.createElement('script');
+       script.type = 'text/javascript';
+       script.src = `http://${location.host}/file?path=frontend/utils.js`;
+       head.appendChild(script);
         </script>
     </body>
 </html>
