@@ -1,24 +1,24 @@
 {
-  "name": "helpviewer-reader",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "scripts": {
-    "experimental": "node backend/server.exp.js",
-    "start": "node backend/server.js",
-    "test": "node --expose-gc --trace-gc --prof --inspect server.js"
-  },
-  "keywords": [],
-  "author": "lum1",
-  "license": "GPL-3.0-only",
-  "type": "module",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "fast-xml-parser": "^5.4.1",
-    "mime-detect": "^1.3.0"
-  }
+    "name": "helpviewer-reader",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "directories": {
+        "doc": "docs"
+    },
+    "scripts": {
+        "experimental": "node backend/server.exp.js",
+        "start": "node backend/server.js",
+        "dev": "node --expose-gc --trace-gc --prof --inspect backend/server.exp.js --bind 192.168.1.106 --port 8000"
+    },
+    "keywords": [],
+    "author": "lum1",
+    "license": "GPL-3.0-only",
+    "type": "module",
+    "dependencies": {
+        "cors": "^2.8.6",
+        "express": "^5.2.1",
+        "fast-xml-parser": "^5.4.1",
+        "mime-detect": "^1.3.0"
+    }
 }
