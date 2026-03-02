@@ -4,11 +4,12 @@ Copyright © 2024 lum1 -->
 <html lang="en">
     <head>
         <title>HelpViewer Reader</title>
-        <link
+        <link id="style-import"
             rel="stylesheet"
-            href="http://localhost:8000/file?path=frontend/style.css"
+            href=""
         ></link>
-        <script src="http://localhost:8000/file?path=frontend/utils.js"></script>
+        <link id="favicon-import" rel="icon" type="image/x-icon" href="">
+        <script id="utils-import" src=""></script>
     </head>
     <body>
         <header>
@@ -35,11 +36,9 @@ Copyright © 2024 lum1 -->
                 />
                 <img
                     id="loading"
-                    src="http://localhost:8000/file?path=frontend/loading.gif"
+                    src="/file?path=frontend/loading.gif"
+                    hidden="true"
                 />
-                <script>
-                    document.getElementById("status").value = "";
-                </script>
             </form>
             <div id="dabox">
                 <div id="results"></div>
@@ -51,5 +50,13 @@ Copyright © 2024 lum1 -->
         <footer>
             <p>SPDX-License-Identifier: GPL-3.0 WITH bison-exception Copyright © 2024 lum1</p>
         </footer>
+        <script>
+        // Bootstrap script
+        console.info("Running bootstrap");
+        document.getElementById("style-import").href = `${location.host}/file?path=frontend/style.css`;
+        document.getElementById("utils-import").src = `${location.host}/file?path=frontend/utils.js`
+        document.getElementById("favicon-import").src = `${location.host}/file?path=frontend/favicon.ico`
+        document.getElementById("loading").src = `${location.host}/file?path=frontend/loading.gif`
+        </script>
     </body>
 </html>
