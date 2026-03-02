@@ -1,7 +1,13 @@
 const server = `http://${location.host}/`;
+const status = document.getElementById("status");
+const results = document.getElementById("results");
+var data;
+var base = 0;
+const count = 100;
+
 async function search(terms) {
+  base = 0; // reset
   const loading = document.getElementById("loading");
-  const status = document.getElementById("status");
   loading.hidden = false;
   status.style = "background-color:#fcfca4;";
   status.value = "Querying ... ";
@@ -13,10 +19,10 @@ async function search(terms) {
     }
     status.value = "Received ... ";
 
-    const data = await res.json();
+    data = await res.json();
 
     status.value = "Displaying ... ";
-    await displaySearchResults(data);
+    await displayResults(data);
     status.value = "Done ! ";
     loading.hidden = true;
     status.style = "background-color:#a4fca4;";
@@ -27,41 +33,52 @@ async function search(terms) {
   }
 }
 
-async function displaySearchResults(data) {
+async function displayResults() {
   const resultsList = document.createElement("ul");
-  const status = document.getElementById("status");
-  resultsList.classList.add("search-results");
+  // TODO: Create existing list in the @index.html file.
 
   if (Array.isArray(data)) {
     const total = data.length;
-    var base = 0;
-    var allowed_count = 100;
-    data.forEach(async (item, i) => {
-      status.value = `Displaying (${i}/${base + allowed_count})/${total}`;
-      if (i - base >= allowed_count) {
-        return;
-      }
+
+    if (total == 0) {
+      status.value = "No results found";
+      return;
+    }
+    counter.textContent = `${base} / ${count}`;
+
+    for (var n = 0; n <= count; n++) {
+      status.value = `Displaying (${n}/${base + count})/${total}`;
+
       const listItem = document.createElement("li");
-      listItem.textContent = item[0];
+      listItem.textContent = data[n][0];
       resultsList.appendChild(listItem);
 
       const button = document.createElement("button");
-      button.textContent = "View File";
+      button.textContent = "View file";
       button.addEventListener("click", () => {
         document.getElementById("preview").src =
-          server + "file?path=" + item[1];
+          server + "file?path=" + data[n][1];
       });
       listItem.appendChild(button);
-    });
-  } else {
-    const listItem = document.createElement("li");
-    listItem.textContent = "No results found";
-    resultsList.appendChild(listItem);
+    }
+
+    if (results) {
+      controller_tmp = document.getElementById("controller");
+      results.innerHTML = "";
+      results.appendChild(controller_tmp);
+      results.appendChild(resultsList);
+    }
+  }
+}
+
+function step(direction) {
+  // TODO: Implement a boundary check
+  switch (direction) {
+    case "next":
+      base += 100;
+    case "prev":
+      base -= 100;
   }
 
-  const resultsContainer = document.getElementById("results");
-  if (resultsContainer) {
-    resultsContainer.innerHTML = ""; // Clear previous results
-    resultsContainer.appendChild(resultsList);
-  }
+  displayResults();
 }

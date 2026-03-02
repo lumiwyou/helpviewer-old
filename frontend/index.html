@@ -45,7 +45,13 @@ Copyright © 2024 lum1 -->
                 </div>
             </form>
             <div id="dabox">
-                <div id="results"></div>
+                <div id="results">
+                    <div id="controller">
+                        <button onclick="step('prev')">Previous</button>
+                        <label id="counter"></label>
+                        <button onclick="step('next')">Next</button>
+                    </div>
+                </div>
                 <aside id="preview_aside" style="float: right">
                     <iframe id="preview" href=""></iframe>
                 </aside>

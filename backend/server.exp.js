@@ -64,7 +64,7 @@ app.get(global.config.endpoints.get_file, async (req, res) => {
 
   var type = await detectFileMime(file);
   // MIMEDetect not correctly working, prolly due to unwaited promise
-  if (type.localeCompare("text/xml")) type = "text/xml";
+  if (type.localeCompare("text/xml")) type = "text/html";
   if (file.includes(".css")) type = "text/css";
   if (file.includes(".gif")) type = "image/gif";
   if (file.includes(".js")) type = "text/javascript";

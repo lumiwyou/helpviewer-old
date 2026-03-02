@@ -41,7 +41,7 @@ form input[type="submit"] {
 }
 
 form input[type="text"] {
-    width: 100%;
+    width: 50%;
 }
 
 form input[type="submit"]:hover {
@@ -82,6 +82,27 @@ form input[id="status"] {
     overflow-y: scroll;
     width: 35%;
     height: 100%;
+}
+
+#controller {
+    background-color: #282c34;
+    display: block;
+    overflow-y: scroll;
+    width: 100%;
+    background-color: red;
+    display: flex;
+}
+#controller button,
+#controller label {
+    direction: rows;
+    padding: 1em;
+    width: 100%;
+    border: 1px solid #44475a;
+    background-color: #282c34;
+}
+
+#controller button:hover {
+    background-color: #273327;
 }
 
 #preview_aside {
