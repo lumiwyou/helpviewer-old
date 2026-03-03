@@ -1,0 +1,199 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0px;
+}
+p,
+button {
+    color: #ffffff;
+}
+
+body {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: "Fira Code", monospace;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: #000000;
+    background-image: url("bg.png");
+    background-repeat: repeat-x;
+    background-size: 20%;
+    border-bottom: 1px solid #777777;
+    display: flex;
+    flex-direction: rows;
+    order: 1;
+    flex-grow: 0;
+}
+
+#title-area {
+    order: 1;
+    flex-grow: 0;
+    height: 100%;
+}
+#title-area img {
+    height: auto;
+    width: 30%;
+}
+#credits-area {
+    order: 1;
+    flex-grow: 1;
+}
+#credits-area p {
+    float: right;
+    padding: 1em;
+    background-color: #000000;
+    border: 1px solid #777777;
+}
+
+form {
+    background-color: #1c1c1c;
+    border-bottom: 1px solid #777777;
+    padding: 1em;
+}
+
+form label {
+    color: #d4d4d4;
+}
+
+form input[type="text"],
+form input[type="submit"] {
+    background-color: #383838;
+    color: #d4d4d4;
+    border: 1px solid #777777;
+    padding: 0.6em;
+    font-family: "Fira Code", monospace;
+}
+
+form input[type="text"] {
+    width: 50%;
+}
+
+form input[type="submit"]:hover {
+    background-color: #383838;
+    cursor: pointer;
+}
+
+form input[id="status"] {
+    background-color: #383838;
+    color: #d4d4d4;
+    border: 1px solid #777777;
+    width: 100%;
+    padding: 0.6em;
+    font-family: "Fira Code", monospace;
+}
+
+#loading {
+    height: 100%;
+}
+
+.searchFormDivider {
+    height: 50px;
+    display: flex;
+    padding: 5px;
+}
+.searchFormDivider label {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #777777;
+}
+
+#results {
+    flex: 0 1 auto;
+    float: left;
+    background-color: #383838;
+    padding: 1em;
+    display: block;
+    overflow-y: scroll;
+    width: 35%;
+    height: 100%;
+}
+
+#controller {
+    background-color: #383838;
+    display: block;
+    overflow-y: scroll;
+    width: 100%;
+    background-color: red;
+    display: flex;
+}
+#controller button,
+#controller label {
+    direction: rows;
+    padding: 1em;
+    width: 100%;
+    border: 1px solid #777777;
+    background-color: #383838;
+}
+
+#controller button:hover {
+    background-color: #273327;
+}
+
+#preview_aside {
+    flex: 1 1 auto;
+    background-color: #383838;
+    border-left: 1px solid #777777;
+    padding: 1em;
+    width: auto;
+    height: 100%;
+    display: block;
+    float: right;
+}
+
+#preview_aside iframe {
+    border: 0px;
+    width: 100%;
+    height: 100%;
+    background: white;
+}
+
+#dabox {
+    height: 800px;
+    display: flex;
+    flex-flow: row;
+}
+
+#results ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#results li {
+    background-color: #383838;
+    border: 1px solid #777777;
+    padding: 0.6em;
+    margin-bottom: 0.4em;
+    padding-left: -20px;
+    #menu li {
+        padding: 0px;
+    }
+    #menu li a {
+        margin: 0px;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+#results button {
+    float: right;
+    background-color: c7c9c8;
+    border: 1px solid #777777;
+}
+
+footer {
+    background-color: #383838;
+    padding: 1em;
+    border-top: 1px solid #777777;
+    text-align: center;
+    order: 3;
+    flex-grow: 0;
+}
+
+main {
+    order: 2;
+    flex-grow: 1;
+}

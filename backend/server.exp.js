@@ -38,15 +38,8 @@ global.index = {
 };
 
 app.use(cors());
+app.use(express.static("public"));
 
-// ROOT REDIRECT ENDPOINT
-app.get(global.config.endpoints.root, (req, res) => {
-  res.header("Content-Type", "text/html");
-  res.send(readFileSync("frontend/index.html"));
-  res.end();
-});
-
-// GET_FILE ENDPOINT
 app.get(global.config.endpoints.get_file, async (req, res) => {
   console.debug(`${new Date().getTime()} ${req.url}`);
 
@@ -63,11 +56,7 @@ app.get(global.config.endpoints.get_file, async (req, res) => {
   }
 
   var type = await detectFileMime(file);
-  // MIMEDetect not correctly working, prolly due to unwaited promise
   if (type.localeCompare("text/xml")) type = "text/html";
-  if (file.includes(".css")) type = "text/css";
-  if (file.includes(".gif")) type = "image/gif";
-  if (file.includes(".js")) type = "text/javascript";
   res.header("Content-Type", type);
   res.send(readFileSync(file));
   console.info(`${type} OK`);

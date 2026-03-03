@@ -1,0 +1,15 @@
+{
+  "blacklist": [],
+  "endpoints": {
+    "root": "/",
+    "get_file": "/file",
+    "query": "/query"
+  },
+  "bind": {
+    "port": 8000,
+    "address": "localhost"
+  },
+  "data_dir": "helpviewer_data/",
+  "index_file": "index.json",
+  "included_files": [".html", ".htm"]
+}
