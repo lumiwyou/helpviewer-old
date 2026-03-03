@@ -10,6 +10,6 @@
     "address": "localhost"
   },
   "data_dir": "helpviewer_data/",
-  "index_file": "index.json",
+  "index_file": "backend/index.json",
   "included_files": [".html", ".htm"]
 }

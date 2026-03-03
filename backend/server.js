@@ -1,216 +1,91 @@
 // SPDX-License-Identifier: GPL-3.0 WITH bison-exception
 // Copyright © 2024 lum1
-import http from "http";
-import {
-  writeFileSync,
-  readdirSync,
-  readFileSync,
-  existsSync,
-  rmSync,
-} from "node:fs";
-import { XMLParser } from "fast-xml-parser";
+import { existsSync, readFileSync, readdirSync, readFile } from "node:fs";
+import { detectFileMime } from "mime-detect";
+import { checkIndexing, generateIndex, matchesEntry } from "./utils.js";
+import express from "express";
+import cors from "cors";
+const app = express();
 
-const PORT = 8080;
-const DATA_DIR = "helpviewer_data/";
-
-import {
-  detectBufferMime,
-  detectFileMime,
-  detectFilenameMime,
-} from "mime-detect";
-import { readdir, rm } from "node:fs/promises";
-
-// When using --expose-gc flag
-if (global.gc) {
-  global.gc(); // Force garbage collection
-} else {
-  console.log("Garbage collection is not exposed");
-}
-
-global.searchIndex = {
-  files: [],
-  index_data: [],
+global.config = {
+  blacklist: ["/backend/*"],
+  endpoints: {
+    root: "/",
+    get_file: "/file",
+    query: "/query",
+  },
+  bind: {
+    port: 8000,
+    address: "localhost",
+  },
+  data_dir: "helpviewer_data/",
+  index_file: "backend/index.json",
+  included_files: [".html", ".htm"],
 };
 
-async function generate_index() {
-  console.log("Generating a search index ... this may take a while!");
+//global.config = JSON.parse(readFileSync("backend/index.json"));
+//console.log(global.config);
 
-  if (existsSync("index.json")) rmSync("index.json");
-
-  const parsingOptions = {
-    ignoreAttributes: false,
-    attributeNamePrefix: "@_",
-    // preserveOrder: true,
-    unpairedTags: ["hr", "br", "link", "meta"],
-    stopNodes: ["*.pre", "*.script"],
-    processEntities: true,
-    isArray: (tagName) => {
-      if (["title", "h2", "codesnippet"].includes(tagName)) return true;
-    },
-    htmlEntities: true,
-  };
-  const parser = new XMLParser(parsingOptions);
-
-  var files = readdirSync(DATA_DIR);
-  files.forEach((file, f) => {
-    process.stdout.clearLine[0];
-    process.stdout.cursorTo(0);
-    process.stdout.write(`${f} / ${files.length}`);
-    // Exclusively iterate HTML files
-    if (!file.includes(".html") && !file.includes(".htm")) {
-      return;
-    }
-    file = DATA_DIR.concat(file);
-
-    try {
-      var html = readFileSync(file);
-      var root = parser.parse(html);
-    } catch (error_text) {
-      console.log(error_text);
-      return;
-    }
-
-    // PROBLEM: different structures for different product data files.
-    try {
-      var IndexEntry = {
-        filepath: file,
-        title: root.html.head.title, //Title,
-        //headers: root.html.body.div.div.div.div.h2,
-        //codesnippets: root.html.body.div.div.div.div.codesnippet,
-      };
-      global.searchIndex.files.push(file);
-      global.searchIndex.index_data.push(IndexEntry);
-    } catch (error_text) {
-      console.log(error_text);
-      return;
-    }
-  });
-  console.log(" Done!");
+for (var x = 0; x < process.argv.length; x++) {
+  switch (process.argv[x]) {
+    case "--bind":
+      global.config.bind.address = process.argv[x + 1];
+    case "--port":
+      global.config.bind.port = parseInt(process.argv[x + 1]);
+  }
 }
 
-var index_data;
-if (!existsSync("index.json")) {
-  await generate_index();
+global.index = {
+  fileList: [],
+  entries: [],
+};
 
-  index_data = JSON.stringify(global.searchIndex, null, 2);
-  writeFileSync("index.json", index_data);
-} else {
-  console.log("Loading search index ... ");
-  index_data = readFileSync("index.json");
-  global.searchIndex = JSON.parse(index_data);
-  /*console.log("Performing validity check ... ");
-  var files = readdirSync(DATA_DIR);
-  files.forEach((file) => {
-    if (!global.searchIndex.files.includes(file)) generate_index();
-  });*/
-}
-index_data = null;
+app.use(cors());
+app.use(express.static("public"));
 
-const server = http.createServer(async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+app.get(global.config.endpoints.get_file, async (req, res) => {
+  console.debug(`${new Date().getTime()} ${req.url}`);
 
-  if (req.url == "/") {
-    var text = readFileSync("./frontend/index.html", "utf-8");
-    res.setHeader("Content-Type", "text/html");
-    res.write(text);
+  const file = req.query.path;
+  if (!file) {
+    return res.status(400).send("Path query parameter is required");
   }
 
-  var terms,
-    results = [];
-  if (req.url.includes("/file?path=")) {
-    process.stdout.write(
-      "FILE " +
-        new Date().getTime() +
-        ": " +
-        req.url.split("/file?path=")[1] +
-        ": ",
-    );
-    var filepath = req.url.split("/file?path=")[1];
-    if (!existsSync(filepath)) {
-      res.statusCode = 500;
-      res.write("File does not exist");
-      res.end();
-      console.log("NEG");
-      return;
-    }
-    var text = readFileSync(filepath, "utf-8");
-    var contentType = await detectFileMime(filepath);
-    if (contentType.localeCompare("text/xml")) contentType = "text/html";
-    if (filepath.includes(".css")) contentType = "text/css";
-    res.setHeader("Content-Type", contentType);
-    res.write(text);
-    console.log(contentType + " OK");
+  if (!existsSync(file)) {
+    res.status(404);
+    res.send("File not found");
+    res.end();
+    console.error("404");
   }
-  if (req.url.includes("/search?query=")) {
-    terms = req.url.split("?query=")[1].split("+");
-    process.stdout.write(`[SEARCH] ${new Date().getTime()}: ${terms}: `);
 
-    global.searchIndex.index_data.forEach((element) => {
-      terms.forEach((term, t) => {
-        try {
-          var found = false;
-          if (element.title.includes(` ${term} `)) found = true;
-          if (Object.keys(element).includes("headers")) {
-            if (Array.isArray(element.headers)) {
-              // Treat as array
-              element.headers.forEach((header) => {
-                if (header != null && Object.keys(header).includes("#text")) {
-                  if (header["#text"].toString().includes(` ${term} `))
-                    found = true;
-                }
-              });
-            } else {
-              // Treat as single-element
-              if (
-                element.headers != null &&
-                Object.keys(element.headers).includes("#text")
-              ) {
-                if (element.headers["#text"].toString().includes(` ${term} `))
-                  found = true;
-              }
-            }
-          }
-          if (Object.keys(element).includes("codesnippets")) {
-            if (Array.isArray(element.codesnippets)) {
-              // Treat as array
-              element.codesnippets.forEach((codesnippet) => {
-                if (
-                  codesnippet != null &&
-                  Object.keys(codesnippet).includes("#text")
-                ) {
-                  if (codesnippet["#text"].toString().includes(term))
-                    found = true;
-                }
-              });
-            } else {
-              // Treat as single-element
-              if (
-                element.codesnippets != null &&
-                Object.keys(element.codesnippets).includes("#text")
-              ) {
-                if (element.codesnippets["#text"].toString().include(term))
-                  found = true;
-              }
-            }
-          }
-        } catch (error_text) {
-          console.log(error_text);
-          console.log(element);
-        }
-
-        if (found) {
-          results.push([element.title, element.filepath]);
-          return;
-        }
-      });
-    });
-
-    res.write(JSON.stringify(results));
-    console.log("OK");
-  }
+  var type = await detectFileMime(file);
+  if (type.localeCompare("text/xml")) type = "text/html";
+  res.header("Content-Type", type);
+  res.send(readFileSync(file));
+  console.info(`${type} OK`);
   res.end();
 });
 
-server.listen(PORT, () => {
-  console.log(`Service running on http://localhost:${PORT}`);
+// QUERY ENDPOINT
+app.get(global.config.endpoints.query, (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  var results = [];
+  if (!req.query.terms) {
+    return res.status(400).send("Path query parameter is required");
+  }
+  const terms = req.query.terms.split("+");
+
+  console.info(`${new Date().getTime()} ${req.url}`);
+  global.index.entries.forEach((entry) => {
+    if (matchesEntry(entry, terms)) results.push([entry.title, entry.filepath]);
+  });
+  res.send(JSON.stringify(results));
+  res.end();
+});
+
+app.listen(global.config.bind.port, () => {
+  checkIndexing();
+  console.info(
+    `Service running on http://${global.config.bind.address}:${global.config.bind.port}`,
+  );
 });
