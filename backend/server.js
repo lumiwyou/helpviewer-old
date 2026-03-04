@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0 WITH bison-exception
-// Copyright © 2024 lum1
+// Copyright © 2026 lum1
 import { existsSync, readFileSync, readdirSync, readFile } from "node:fs";
 import { detectFileMime } from "mime-detect";
 import { checkIndexing, generateIndex, matchesEntry } from "./utils.js";

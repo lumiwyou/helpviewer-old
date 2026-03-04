@@ -36,4 +36,4 @@ I expect you to bow down before my footsies and kiss them.
 
 ### Copyright
 SPDX-License-Identifier: GPL-3.0 WITH bison-exception
-Copyright © 2024 lum1
+Copyright © 2026 lum1
