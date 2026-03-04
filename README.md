@@ -31,8 +31,7 @@ I expect praises and kisses!
 I expect you to bow down before my footsies and kiss them.
 
 # Known issues
-- Right now, the parser does not work for most HelpViewer product files due to varying XML-structures. (It is only tailored after a specific product group as of right now)
-- When searching, if the server returns a results batch bigger than the browser is capable of storing and handling, then it will freeze the tab. I am working on fixing this.
+- I think it's fixed :PPP
 
 ### Copyright
 SPDX-License-Identifier: GPL-3.0 WITH bison-exception
