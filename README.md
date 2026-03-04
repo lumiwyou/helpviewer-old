@@ -31,7 +31,7 @@ I expect praises and kisses!
 I expect you to bow down before my footsies and kiss them.
 
 # Known issues
-- I think it's fixed :PPP
+- Nvm it borken
 
 ### Copyright
 SPDX-License-Identifier: GPL-3.0 WITH bison-exception
