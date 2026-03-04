@@ -132,3 +132,4 @@ dist
 
 helpviewer_data
 package-lock.json
+backend/tmp
