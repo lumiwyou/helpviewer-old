@@ -1,5 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0 WITH bison-exception
 // Copyright © 2024 lum1
-import { XMLParser } from "fast-xml-parser";
+import { parse } from "node-html-parser";
 const product_root = "https://services.mtps.microsoft.com/serviceapi/products";
-data = fetch(product_root);
+
+export async function recurIndexing(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Response status: ${res.status}`);
+
+    const root = await parse(await res.text());
+    console.log(root.querySelectorAll("a"));
+}
+
+// Start the dominoes
+recurIndexing(product_root);

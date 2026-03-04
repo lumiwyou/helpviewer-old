@@ -1,6 +1,5 @@
 import { readdir, rm, writeFile, readFile } from "node:fs/promises";
 import { XMLParser } from "fast-xml-parser";
-
 import { readdirSync, readFileSync, existsSync } from "node:fs";
 
 export function extractTags(obj, tag) {
