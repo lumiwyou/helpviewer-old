@@ -2,7 +2,7 @@
 // Copyright © 2026 lum1
 import { existsSync, readFileSync, readdirSync, readFile } from "node:fs";
 import { detectFileMime } from "mime-detect";
-import { checkIndexing, generateIndex, matchesEntry } from "./utils.js";
+import { checkIndexing, handlePargs, matchesEntry } from "./utils.js";
 import express from "express";
 import cors from "cors";
 const app = express();
@@ -77,13 +77,15 @@ app.get(global.config.endpoints.query, (req, res) => {
 
   console.info(`${new Date().getTime()} ${req.url}`);
   global.index.entries.forEach((entry) => {
-    if (matchesEntry(entry, terms)) results.push([entry.title, entry.filepath]);
+    if (matchesEntry(entry, terms))
+      results.push([entry.metadata[0].data[0], entry.filepath]);
   });
   res.send(JSON.stringify(results));
   res.end();
 });
 
 app.listen(global.config.bind.port, () => {
+  handlePargs();
   checkIndexing();
   console.info(
     `Service running on http://${global.config.bind.address}:${global.config.bind.port}`,
