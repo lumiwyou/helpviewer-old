@@ -80,10 +80,15 @@ async function displayResults() {
 function step(direction) {
     switch (direction) {
         case "next":
-            base += 100;
+            base += count;
+            break;
         case "prev":
-            base -= 100;
+            base -= count;
+            break;
     }
+
+    // Make sure base never goes below 0 or beyond data.length
+    base = Math.max(0, Math.min(base, data.length - 1));
 
     displayResults();
 }
