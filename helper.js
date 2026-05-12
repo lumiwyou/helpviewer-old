@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0 WITH bison-exception
-// Copyright © 2026 lum1
+// Copyright © 2026 Lumi Hyväri
 
 /* helper.js
  * a script to help with installing the helpviewer documentation product files
